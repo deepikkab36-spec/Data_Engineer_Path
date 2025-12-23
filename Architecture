@@ -1,0 +1,208 @@
+Below is a **visual architecture cheat sheet for Data Engineering**, presented as **clean ASCII-style diagrams** you can quickly recall for learning, interviews, and real projects.
+
+---
+
+## 1. **Modern Data Engineering Reference Architecture**
+
+```
+[ Data Sources ]
+   |   |   |
+   |   |   └── APIs
+   |   └──── Databases (OLTP)
+   └──────── Files / Logs
+            |
+            v
+[ Ingestion Layer ]
+(Batch / Streaming)
+            |
+            v
+[ Data Lake ]
+(Bronze → Silver → Gold)
+            |
+            v
+[ Processing Layer ]
+(Spark / SQL Engines)
+            |
+            v
+[ Data Warehouse ]
+(Analytics Optimized)
+            |
+            v
+[ BI / Reporting ]
+(Dashboards / ML)
+```
+
+---
+
+## 2. **Medallion Architecture (Very Important)**
+
+```
+BRONZE (Raw)
+- Raw data
+- No transformation
+- Append-only
+        |
+        v
+SILVER (Cleaned)
+- Deduplicated
+- Validated
+- Schema enforced
+        |
+        v
+GOLD (Business)
+- Aggregated
+- Modeled (Facts & Dimensions)
+- Reporting-ready
+```
+
+---
+
+## 3. **ETL vs ELT Architecture**
+
+### ETL (Traditional)
+
+```
+Source → Transform → Load → Warehouse
+```
+
+### ELT (Modern / Cloud)
+
+```
+Source → Load → Warehouse → Transform
+```
+
+Key Concept:
+
+* ETL = Transform before storage
+* ELT = Transform inside warehouse/lake
+
+---
+
+## 4. **Batch vs Streaming Pipelines**
+
+### Batch Pipeline
+
+```
+Data (Daily/Hourly)
+      |
+      v
+[ Batch Job ]
+      |
+      v
+[ Storage / Warehouse ]
+```
+
+### Streaming Pipeline
+
+```
+Events → Queue → Stream Processor → Storage
+```
+
+---
+
+## 5. **Data Lake vs Data Warehouse**
+
+```
+Data Lake
+- Raw & semi-structured
+- Cheap storage
+- Schema-on-read
+
+Data Warehouse
+- Structured data
+- Fast analytics
+- Schema-on-write
+```
+
+---
+
+## 6. **Star Schema (Interview Favorite)**
+
+```
+           [ Dim_Date ]
+                |
+[ Dim_Product ] - [ Fact_Sales ] - [ Dim_Customer ]
+                |
+           [ Dim_Store ]
+```
+
+* Fact table → measures (sales, revenue)
+* Dimension tables → context
+
+---
+
+## 7. **Orchestration (DAG Concept)**
+
+```
+      Task A
+        |
+        v
+      Task B
+     /       \
+Task C     Task D
+        \     /
+         v   v
+        Task E
+```
+
+Key ideas:
+
+* Dependencies
+* Retries
+* Failures isolated
+
+---
+
+## 8. **Data Quality Flow**
+
+```
+Ingested Data
+      |
+      v
+[ Validation Rules ]
+- Null checks
+- Range checks
+- Duplicate checks
+      |
+      v
+Clean Data or Quarantine
+```
+
+---
+
+## 9. **Security Flow**
+
+```
+User / Service
+      |
+      v
+Authentication
+      |
+      v
+Authorization (RBAC)
+      |
+      v
+Encrypted Data Access
+```
+
+---
+
+## 10. **End-to-End Production Pipeline**
+
+```
+Source
+  |
+Ingestion
+  |
+Validation
+  |
+Transformation
+  |
+Storage
+  |
+Warehouse
+  |
+BI / ML
+  |
+Monitoring & Alerts
+```
